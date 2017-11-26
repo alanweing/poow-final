@@ -35,6 +35,12 @@ public class Twit {
     @JoinColumn(name="twit_id")
     private Twit twit;
 
+    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE,
+                                                CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name="twit_tag", joinColumns=@JoinColumn(name="tag_id"),
+               inverseJoinColumns=@JoinColumn(name="tag_id"))
+    private List<Tag> tags;
+
 //    @Column(name="twit_id", nullable=false)
 //    private int twitId;
 
@@ -107,5 +113,21 @@ public class Twit {
 
     public void setTwit(Twit twit) {
         this.twit = twit;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }
