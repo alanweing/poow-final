@@ -7,33 +7,43 @@ import java.util.Date;
 @Table(name="followers", schema="poow")
 public class Follower {
 
-    @Column(name="user_id", nullable=false)
-    private int userId;
+    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                        CascadeType.PERSIST, CascadeType.MERGE},
+               fetch=FetchType.EAGER)
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
-    @Column(nullable=false)
-    private int follows;
+    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                        CascadeType.PERSIST, CascadeType.MERGE},
+               fetch=FetchType.EAGER)
+    @JoinColumn(name="follows", nullable=false)
+    private User follows;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at")
     private Date createdAt;
 
-    public Follower() {}
-
-    public Follower(int userId, int follows) {
-        this.userId = userId;
-        this.follows = follows;
+    public Follower() {
         this.createdAt = new Date();
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public int getFollows() {
-        return follows;
     }
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getFollows() {
+        return follows;
+    }
+
+    public void setFollows(User follows) {
+        this.follows = follows;
     }
 }
