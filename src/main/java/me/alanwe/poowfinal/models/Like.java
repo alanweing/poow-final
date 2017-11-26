@@ -7,11 +7,17 @@ import java.util.Date;
 @Table(name="likes", schema="poow")
 public class Like {
 
-    @Column(name="twit_id", nullable=false)
-    private int twitId;
+    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                        CascadeType.PERSIST, CascadeType.MERGE},
+               fetch=FetchType.EAGER)
+    @JoinColumn(name="twit_id", nullable=false)
+    private Twit twit;
 
-    @Column(name="user_id", nullable=false)
-    private int userId;
+    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                        CascadeType.PERSIST, CascadeType.MERGE},
+               fetch=FetchType.EAGER)
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at")
@@ -19,18 +25,20 @@ public class Like {
 
     public Like() {}
 
-    public Like(int twitId, int userId) {
-        this.twitId = twitId;
-        this.userId = userId;
-        this.createdAt = new Date();
+    public Twit getTwit() {
+        return twit;
     }
 
-    public int getTwitId() {
-        return twitId;
+    public void setTwit(Twit twit) {
+        this.twit = twit;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {

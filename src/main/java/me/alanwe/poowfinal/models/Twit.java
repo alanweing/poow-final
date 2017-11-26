@@ -1,7 +1,9 @@
 package me.alanwe.poowfinal.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="twits", schema="poow")
@@ -17,11 +19,19 @@ public class Twit {
 
 //    @Column(name="user_id", nullable=false, updatable=false)
 //    private int userId;
-    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                        CascadeType.PERSIST, CascadeType.MERGE},
+               fetch=FetchType.EAGER)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    @OneToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy="twit", cascade={CascadeType.DETACH, CascadeType.MERGE,
+                                         CascadeType.PERSIST, CascadeType.REFRESH},
+               fetch=FetchType.LAZY)
+    private List<Like> likes;
+
+    @OneToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
+                       CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="twit_id")
     private Twit twit;
 
@@ -51,6 +61,12 @@ public class Twit {
         this.user = user;
         this.twit = twit;
         this.retwit = retwit;
+    }
+
+    public void add(final Like like) {
+        if (likes == null) likes = new ArrayList<>();
+        like.setTwit(this);
+        likes.add(like);
     }
 
     public int getId() {

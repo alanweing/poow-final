@@ -37,8 +37,14 @@ public class User {
     }
 
     @OneToMany(mappedBy="user", cascade={CascadeType.DETACH, CascadeType.MERGE,
-                                         CascadeType.PERSIST, CascadeType.REFRESH})
+                                         CascadeType.PERSIST, CascadeType.REFRESH},
+               fetch=FetchType.LAZY)
     private List<Twit> twits;
+
+    @OneToMany(mappedBy="twit", cascade={CascadeType.DETACH, CascadeType.MERGE,
+                                         CascadeType.PERSIST, CascadeType.REFRESH},
+              fetch=FetchType.LAZY)
+    private List<Like> likes;
 
     public User() {}
 
@@ -54,6 +60,12 @@ public class User {
         if (twits == null) twits = new ArrayList<>();
         twits.add(twit);
         twit.setUser(this);
+    }
+
+    public void add(final Like like) {
+        if (likes == null) likes = new ArrayList<>();
+        like.setUser(this);
+        likes.add(like);
     }
 
     public int getId() {

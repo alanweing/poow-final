@@ -1,31 +1,43 @@
 package me.alanwe.poowfinal.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="tags", schema="poow")
 public class Tag {
 
-    @Column(name="twit_id", nullable=false)
-    private int twitId;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(nullable=false)
+    private int id;
 
     @Column(length=20, nullable=false)
     private String tag;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_at")
+    private Date createdAt;
+
     public Tag() {}
 
-    public Tag(int twitId, String tag) {
-        this.twitId = twitId;
+    public Tag(final String tag) {
         this.tag = tag;
     }
 
-    public int getTwitId() {
-        return twitId;
+    public int getId() {
+        return id;
     }
 
     public String getTag() {
         return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }
