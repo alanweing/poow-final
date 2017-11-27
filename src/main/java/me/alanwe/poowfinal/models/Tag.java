@@ -2,7 +2,7 @@ package me.alanwe.poowfinal.models;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="tags", schema="poow")
@@ -14,13 +14,13 @@ public class Tag {
     private int id;
 
     @Column(length=20, nullable=false)
-    private String tag;
+    private String name;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.DETACH, CascadeType.MERGE,
                                                CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name="twit_tag", joinColumns=@JoinColumn(name="tag_id"),
                inverseJoinColumns=@JoinColumn(name="twit_id"))
-    private List<Twit> twits;
+    private Set<Twit> twits;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at")
@@ -28,31 +28,31 @@ public class Tag {
 
     public Tag() {}
 
-    public Tag(final String tag) {
-        this.tag = tag;
+    public Tag(final String name) {
+        this.name = name;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getName() {
+        return name;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setName(String tag) {
+        this.name = tag;
     }
 
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    public List<Twit> getTwits() {
+    public Set<Twit> getTwits() {
         return twits;
     }
 
-    public void setTwits(List<Twit> twits) {
+    public void setTwits(Set<Twit> twits) {
         this.twits = twits;
     }
 }

@@ -1,4 +1,12 @@
 package me.alanwe.poowfinal.dao;
 
-public class UserDao {
+import me.alanwe.poowfinal.models.User;
+
+import java.util.Set;
+
+public interface UserDao {
+
+    Set<User> getUsers();
+    void create(User user);
+
 }

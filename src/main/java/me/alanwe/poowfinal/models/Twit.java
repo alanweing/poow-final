@@ -1,9 +1,9 @@
 package me.alanwe.poowfinal.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="twits", schema="poow")
@@ -28,7 +28,7 @@ public class Twit {
     @OneToMany(mappedBy="twit", cascade={CascadeType.DETACH, CascadeType.MERGE,
                                          CascadeType.PERSIST, CascadeType.REFRESH},
                fetch=FetchType.LAZY)
-    private List<Like> likes;
+    private Set<Like> likes;
 
     @OneToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
                        CascadeType.PERSIST, CascadeType.MERGE})
@@ -37,9 +37,9 @@ public class Twit {
 
     @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE,
                                                 CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="twit_tag", joinColumns=@JoinColumn(name="tag_id"),
+    @JoinTable(name="twit_tag", joinColumns=@JoinColumn(name="twit_id"),
                inverseJoinColumns=@JoinColumn(name="tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
 //    @Column(name="twit_id", nullable=false)
 //    private int twitId;
@@ -70,7 +70,7 @@ public class Twit {
     }
 
     public void add(final Like like) {
-        if (likes == null) likes = new ArrayList<>();
+        if (likes == null) likes = new HashSet<>();
         like.setTwit(this);
         likes.add(like);
     }
@@ -115,19 +115,19 @@ public class Twit {
         this.twit = twit;
     }
 
-    public List<Like> getLikes() {
+    public Set<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<Like> likes) {
+    public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

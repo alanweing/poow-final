@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:context="http://www.springframework.org/schema/context"
-           xmlns:mvc="http://www.springframework.org/schema/mvc"
-           xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-        <!-- ADD SUPPORT FOR CONVERSION, FORMATTING AND VALIDATION -->
-        <mvc:annotation-driven />
-        <!-- STATIC FILES -->
-        <mvc:resources mapping="/resources/**" location="/resources/">
-        </mvc:resources>
-        <!-- ADD SUPPORT FOR COMPONENT SCANNING -->
-        <context:component-scan base-package="me.alanwe.poowfinal" />
-        <!-- DEFINE SPRING MVC VIEW RESOLVER -->
-        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!-- ADD SUPPORT FOR CONVERSION, FORMATTING AND VALIDATION -->
+    <mvc:annotation-driven />
+    <mvc:default-servlet-handler />
+    <!-- STATIC FILES -->
+    <mvc:resources mapping="/resources/**" location="/resources/" cache-period="10000"/>
+    <!-- ADD SUPPORT FOR COMPONENT SCANNING -->
+    <context:component-scan base-package="me.alanwe.poowfinal" />
+    <!-- DEFINE SPRING MVC VIEW RESOLVER -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
@@ -24,5 +24,56 @@
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames" value="resources/messages" />
     </bean>
+
+    <!-- DATABASE DATA SOURCE / CONNECTION POOL -->
+    <bean
+            id="dataSource"
+            class="com.mchange.v2.c3p0.ComboPooledDataSource"
+            destroy-method="close">
+        <property name="driverClass" value="org.postgresql.Driver"/>
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/remote"/>
+        <property name="user" value="remote"/>
+        <property name="password" value="147258369we"/>
+
+        <!-- CONNECTION POOL PROPERTIES -->
+        <property name="minPoolSize" value="5"/>
+        <property name="maxPoolSize" value="20"/>
+        <property name="maxIdleTime" value="30000"/>
+    </bean>
+
+    <!-- HIBERNATE SESSION FACTORY -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- SCAN FOR @Entity CLASSES -->
+        <property name="packagesToScan" value="me.alanwe.poowfinal.models"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+        <!--<property name="configLocation" value="classpath:hibernate.cfg.xml"/>-->
+    </bean>
+
+    <!-- HIBERNATE TRANSACTION MANAGER -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="me.alanwe.poowfinal.auth.AuthInterceptor">
+                <!--<property name="excludeUrls">-->
+                    <!--<list>-->
+                        <!--<value>/rest?</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            </bean>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
 
 </beans>

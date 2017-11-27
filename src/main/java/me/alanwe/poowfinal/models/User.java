@@ -1,9 +1,9 @@
 package me.alanwe.poowfinal.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="users", schema="poow")
@@ -31,41 +31,65 @@ public class User {
     @Column(name="updated_at")
     private Date updatedAt;
 
+    @Column(name="salt", length=40)
+    private String salt;
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
     }
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = this.updatedAt = new Date();
+    }
+
     @OneToMany(mappedBy="user", cascade={CascadeType.DETACH, CascadeType.MERGE,
                                          CascadeType.PERSIST, CascadeType.REFRESH},
                fetch=FetchType.LAZY)
-    private List<Twit> twits;
+    private Set<Twit> twits;
 
     @OneToMany(mappedBy="twit", cascade={CascadeType.DETACH, CascadeType.MERGE,
                                          CascadeType.PERSIST, CascadeType.REFRESH},
               fetch=FetchType.LAZY)
-    private List<Like> likes;
+    private Set<Like> likes;
 
-    public User() {}
+    @OneToMany(mappedBy="user", cascade={CascadeType.DETACH, CascadeType.MERGE,
+                                         CascadeType.PERSIST, CascadeType.REFRESH},
+               fetch=FetchType.EAGER)
+    private Set<Follower> follows;
 
-    public User(final String login, final String password, final String name) {
+    public User() {
+        this.createdAt = this.updatedAt = new Date();
+    }
+
+    public User(final String login, final String password, final String name, final String salt) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.createdAt = new Date();
         this.updatedAt = new Date();
+        this.salt = salt;
     }
 
     public void add(final Twit twit) {
-        if (twits == null) twits = new ArrayList<>();
+        if (twits == null) twits = new HashSet<>();
         twits.add(twit);
         twit.setUser(this);
     }
 
     public void add(final Like like) {
-        if (likes == null) likes = new ArrayList<>();
+        if (likes == null) likes = new HashSet<>();
         like.setUser(this);
         likes.add(like);
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public int getId() {
@@ -98,5 +122,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", salt='" + salt + '\'' +
+                '}';
     }
 }
