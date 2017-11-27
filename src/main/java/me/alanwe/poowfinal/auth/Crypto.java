@@ -22,13 +22,17 @@ public class Crypto {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public static HashedPassword hashPassword(String password) {
-        final byte[] salt = genRandomBytes(20);
-        password += salt;
+    public static boolean passwordMatch(final String password, final HashedPassword hashedPassword) {
+        final byte[] salt = Base64.getDecoder().decode(hashedPassword.getSalt());
+        final HashedPassword hp = hash(password, salt);
+        return hp != null && hashedPassword.getHashedPassword().equals(hp.getHashedPassword());
+    }
+
+    public static HashedPassword hash(final String toHash, final byte[] salt) {
         try {
             final MessageDigest digest = MessageDigest.getInstance("SHA-512");
             digest.update(salt);
-            final byte[] encoded = digest.digest(password.getBytes("UTF-8"));
+            final byte[] encoded = digest.digest(toHash.getBytes("UTF-8"));
             final StringBuilder sb = new StringBuilder();
             for (byte anEncoded : encoded)
                 sb.append(Integer.toString((anEncoded & 0xff) + 0x100, 16).substring(1));
@@ -36,6 +40,11 @@ public class Crypto {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }        return null;
+    }
+
+    public static HashedPassword hashPassword(final String password) {
+        final byte[] salt = genRandomBytes(20);
+        return hash(password, salt);
     }
 
     public static class HashedPassword {

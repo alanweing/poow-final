@@ -1,6 +1,8 @@
 package me.alanwe.poowfinal.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,9 +17,12 @@ public class User {
     private int id;
 
     @Column(nullable=false, length=10)
+    @NotNull(message="required")
     private String login;
 
     @Column(nullable=false, length=255)
+    @NotNull(message="required")
+    @Size(min=6, message="minimum length = 6")
     private String password;
 
     @Column(nullable=false, length=50)
@@ -58,6 +63,10 @@ public class User {
                                          CascadeType.PERSIST, CascadeType.REFRESH},
                fetch=FetchType.EAGER)
     private Set<Follower> follows;
+
+    @OneToOne(mappedBy="user", cascade={CascadeType.DETACH, CascadeType.MERGE,
+                                        CascadeType.PERSIST, CascadeType.REFRESH})
+    private Token token;
 
     public User() {
         this.createdAt = this.updatedAt = new Date();
@@ -126,6 +135,14 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 
     @Override

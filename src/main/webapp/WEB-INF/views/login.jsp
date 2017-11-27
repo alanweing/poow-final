@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -27,19 +27,28 @@
 <br>
 <div class="container">
     <div class="row">
-        <form action="login" class="col s12" method="post">
+        <form:form action="login" modelAttribute="user" cssClass="col s12" method="post">
             <div class="row">
                 <div class="input-field col s12 black-text">
-                    <input placeholder="johnDoe" id="login" type="text" class="validate">
+                    <form:input path="login" id="login" cssClass="validate" />
                     <label for="login">Login</label>
                 </div>
+                <form:errors cssStyle="color:red" path="login" element="div" cssClass="col s12"/>
             </div>
             <div class="row">
                 <div class="input-field col s12 black-text">
-                    <input id="password" type="password" class="validate">
+                    <form:password path="password" id="password" cssClass="validate"/>
                     <label for="password">Password</label>
                 </div>
+                <form:errors cssStyle="color:red" path="password" element="div" cssClass="col s12"/>
             </div>
+            <c:if test="${error != null}">
+                <div class="row">
+                    <div class="col s12" style="color:red">
+                        <p>${error}</p>
+                    </div>
+                </div>
+            </c:if>
             <div class="row">
                 <button class="btn waves-effect waves-light" type="submit">Log-in
                     <i class="material-icons right">send</i>
@@ -48,7 +57,7 @@
                     <i class="material-icons right">person add</i>
                 </a>
             </div>
-        </form>
+        </form:form>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>

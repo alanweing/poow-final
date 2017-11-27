@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Configuration
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String AUTH_TOKEN_TAG = "authToken";
+    public static final String AUTH_TOKEN_TAG = "authToken";
     private static String[] AUTHORIZED_URIS = new String[] {
             "login",
             "user/create"
@@ -33,7 +33,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             return false;
         } else if (request.getRequestURI().equals("/login"))
             return true;
-        final String token = (String) session.getAttribute(AUTH_TOKEN_TAG);
+        final Object token = session.getAttribute(AUTH_TOKEN_TAG);
         // true if the execution chain should proceed with the next interceptor or the handler itself.
         // Else, DispatcherServlet assumes that this interceptor has already dealt with the response itself.
         // Called before the handler execution, returns a boolean value, “true” : continue the handler

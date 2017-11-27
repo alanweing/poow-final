@@ -4,8 +4,11 @@ import me.alanwe.poowfinal.auth.Crypto;
 import me.alanwe.poowfinal.models.User;
 import me.alanwe.poowfinal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +21,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-//
+
     @RequestMapping(method=RequestMethod.GET)
     public String getUsers(final Model model) {
         final Set<User> users = userService.getUsers();
