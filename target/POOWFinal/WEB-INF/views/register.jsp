@@ -27,6 +27,9 @@
 <br>
 <div class="container">
     <div class="row">
+        <h1>Sign-up</h1>
+    </div>
+    <div class="row">
         <form:form action="create" modelAttribute="user" cssClass="col s12" method="post">
             <div class="row">
                 <div class="input-field col s12 black-text">
@@ -34,6 +37,7 @@
                     <%--<input placeholder="John Doe" id="name" type="text" class="validate">--%>
                     <label for="name">Name</label>
                 </div>
+                <form:errors cssStyle="color:red" path="name" element="div" cssClass="col s12"/>
             </div>
             <div class="row">
                 <div class="input-field col s12 black-text">
@@ -41,6 +45,7 @@
                     <%--<input placeholder="johnDoe" id="login" type="text" class="validate">--%>
                     <label for="login">Login</label>
                 </div>
+                <form:errors cssStyle="color:red" path="login" element="div" cssClass="col s12"/>
             </div>
             <div class="row">
                 <div class="input-field col s12 black-text">
@@ -48,6 +53,7 @@
                     <%--<input id="password" type="password" class="validate">--%>
                     <label for="password">Password</label>
                 </div>
+                <form:errors cssStyle="color:red" path="password" element="div" cssClass="col s12"/>
             </div>
             <div class="row">
                 <button class="btn waves-effect waves-light" type="submit">confirm

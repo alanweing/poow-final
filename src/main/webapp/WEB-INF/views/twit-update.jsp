@@ -33,21 +33,21 @@
 <br>
 <br>
 <div class="container">
-    <c:forEach items="${users}" var="user">
-        <div class="card">
-            <div class="card-content">
-                <a href="/user/${user.id}"><span class="card-title activator blue-text text-darken-4">@${user.login}
-                </span></a>
-                <p class="grey-text">Member since: ${user.createdAt}</p>
+    <div class="row">
+        <form:form action="/twit/update" modelAttribute="twit" cssClass="col s12" method="post">
+            <form:hidden path="id"/>
+            <div class="row">
+                <div class="input-field col s12">
+                    <form:textarea path="message" id="message" cssClass="materialize-textarea"/>
+                    <label for="message">Message</label>
+                </div>
             </div>
-            <div class="card-action">
-                <c:if test="${me.id != user.id}">
-                    <a class="icon" href="/user/${user.id}/follow"><i class="material-icons">person_add</i></a>
-                </c:if>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">save</button>
             </div>
-
-        </div>
-    </c:forEach>
+            <form:errors path="message" cssStyle="color:red"/>
+        </form:form>
+    </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/materialize.min.js"></script>

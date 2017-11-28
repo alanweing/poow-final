@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -19,11 +17,10 @@ public class UserDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         final Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("from User", User.class);
-        final List<User> users = query.getResultList();
-        return new HashSet<>(users);
+        final Query<User> query = session.createQuery("from User", User.class);
+        return query.getResultList();
     }
 
     @Override
@@ -43,5 +40,11 @@ public class UserDaoImpl implements UserDao {
     public void create(final User user) {
         final Session session = sessionFactory.getCurrentSession();
         session.save(user);
+    }
+
+    @Override
+    public User get(int id) {
+        final Session session = sessionFactory.getCurrentSession();
+        return session.get(User.class, id);
     }
 }

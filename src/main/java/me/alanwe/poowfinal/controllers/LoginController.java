@@ -1,5 +1,6 @@
 package me.alanwe.poowfinal.controllers;
 
+import me.alanwe.poowfinal.auth.AuthInterceptor;
 import me.alanwe.poowfinal.models.User;
 import me.alanwe.poowfinal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("login")
 public class LoginController {
 
     @Autowired
@@ -28,7 +30,8 @@ public class LoginController {
     }
 
     @GetMapping
-    public String login(final Model model) {
+    public String login(final HttpSession session, final Model model) {
+        if (session.getAttribute(AuthInterceptor.USER_TAG) != null) return "redirect:/twit";
         model.addAttribute("user", new User());
         return "login";
     }
@@ -37,6 +40,7 @@ public class LoginController {
     public String authenticate(final HttpServletRequest request, final Model model,
                                @Valid @ModelAttribute("user") final User userM,
                                final BindingResult bindingResult) {
+        System.out.println("authenticating");
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -45,7 +49,7 @@ public class LoginController {
             model.addAttribute("error", "Wrong credentials");
             return "login";
         }
-        return "twits";
+        return "redirect:twit";
     }
 
 }

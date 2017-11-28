@@ -8,6 +8,10 @@
         Programaçao Orientada a Objetos WEB, trabalho final.
     </description>
 
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
     <!-- CONFIGURE SPRING MVC DISPATCHER SERVLET-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>

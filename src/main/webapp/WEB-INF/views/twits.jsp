@@ -1,4 +1,4 @@
-
+<%@ page import="me.alanwe.poowfinal.models.Like" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -16,6 +16,13 @@
 </head>
 
 <body>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red" href="twit/create">
+        <i class="large material-icons">create</i>
+    </a>
+</div>
+
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper aw-navbar z-depth-3">
@@ -27,24 +34,33 @@
 
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li>
-                    <a href="sass.html">Sass</a>
+                    <a href="/twit">
+                        <i class="material-icons">public</i>
+                    </a>
                 </li>
                 <li>
-                    <a href="badges.html">Components</a>
+                    <a href="/user">
+                        <i class="material-icons">face</i>
+                    </a>
                 </li>
                 <li>
-                    <a href="collapsible.html">JavaScript</a>
+                    <a href="/twit/trending">
+                        <i class="material-icons">whatshot</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/twit/mine">
+                        <i class="material-icons">archive</i>
+                    </a>
                 </li>
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li>
-                    <a href="sass.html">
-                        <i class="material-icons left">search</i>Link with Left Icon</a>
+                    <a href="user/logout">
+                        <i class="material-icons right">exit_to_app</i>@${user.login}
+                    </a>
                 </li>
-                <li>
-                    <a href="badges.html">
-                        <i class="material-icons right">view_module</i>Link with Right Icon</a>
-                </li>
+
             </ul>
         </div>
     </nav>
@@ -55,25 +71,39 @@
 
 <div class="container">
 
-    <div class="card">
-        <%--<div class="card-image waves-effect waves-block waves-light">--%>
-        <%--<img class="activator" src="images/office.jpg">--%>
-        <%--</div>--%>
-        <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">Card Title
-                    <i class="material-icons right">more_vert</i>
-                </span>
-            <p>
-                <a href="#">This is a link</a>
-            </p>
+    <c:forEach items="${twits}" var="twit">
+        <div class="card">
+            <div class="card-content">
+                <a href="/user/${twit.user.id}"><span class="card-title activator blue-text text-darken-4">@${twit.user.login}
+                </span></a>
+                <p class="flow-text">${twit.message}</p>
+                <br>
+                <p class="grey-text">Last modified: ${twit.updatedAt}</p>
+            </div>
+            <div class="card-action">
+                <c:choose>
+                    <c:when test="${twit.user.id == user.id}">
+                        <a class="icon"><i class="material-icons">favorite_border</i>${twit.likes.size()}</a>
+                        <a href="/twit/${twit.id}/update"><i class="material-icons">mode_edit</i></a>
+                        <a href="/twit/${twit.id}/delete"><i class="material-icons">delete</i></a>
+                    </c:when>
+                    <c:otherwise>
+                        <c:choose>
+                            <c:when test="${twit.liked(user)}">
+                                <a class="icon" href="/twit/${twit.id}/unlike"><i class="material-icons">favorite</i>${twit.likes.size()}</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="icon" href="/twit/${twit.id}/like"><i class="material-icons">favorite_border</i>${twit.likes.size()}</a>
+                            </c:otherwise>
+                        </c:choose>
+                        <a href="/twit/${twit.id}/retwit"><i class="material-icons">share</i></a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+
         </div>
-        <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">Card Title
-                    <i class="material-icons right">close</i>
-                </span>
-            <p>Here is some more information about this product that is only revealed once clicked on.</p>
-        </div>
-    </div>
+    </c:forEach>
+
 
 </div>
 

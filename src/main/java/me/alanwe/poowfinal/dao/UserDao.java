@@ -2,12 +2,13 @@ package me.alanwe.poowfinal.dao;
 
 import me.alanwe.poowfinal.models.User;
 
-import java.util.Set;
+import java.util.List;
 
 public interface UserDao {
 
-    Set<User> getUsers();
+    List<User> getUsers();
     User getUser(String login);
     void create(User user);
+    User get(int id);
 
 }

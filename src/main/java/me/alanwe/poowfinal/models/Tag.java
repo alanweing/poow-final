@@ -18,7 +18,7 @@ public class Tag {
 
     @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.DETACH, CascadeType.MERGE,
                                                CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="twit_tag", joinColumns=@JoinColumn(name="tag_id"),
+    @JoinTable(name="twit_tag",schema="poow",joinColumns=@JoinColumn(name="tag_id"),
                inverseJoinColumns=@JoinColumn(name="twit_id"))
     private Set<Twit> twits;
 

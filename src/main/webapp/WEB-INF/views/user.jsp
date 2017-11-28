@@ -33,19 +33,16 @@
 <br>
 <br>
 <div class="container">
-    <c:forEach items="${users}" var="user">
+    <h1>@${user.login}</h1>
+    <p class="grey-text">Member since: ${user.createdAt}</p>
+    <br>
+    <c:forEach items="${twits}" var="twit">
         <div class="card">
             <div class="card-content">
-                <a href="/user/${user.id}"><span class="card-title activator blue-text text-darken-4">@${user.login}
-                </span></a>
-                <p class="grey-text">Member since: ${user.createdAt}</p>
+                <p class="flow-text">${twit.message}</p>
+                <br>
+                <p class="grey-text">${twit.updatedAt}</p>
             </div>
-            <div class="card-action">
-                <c:if test="${me.id != user.id}">
-                    <a class="icon" href="/user/${user.id}/follow"><i class="material-icons">person_add</i></a>
-                </c:if>
-            </div>
-
         </div>
     </c:forEach>
 </div>

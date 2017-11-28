@@ -57,10 +57,9 @@
             <ul class="right hide-on-med-and-down">
                 <li>
                     <a href="user/logout">
-                        <i class="material-icons right">exit_to_app</i>@${user.login}
+                        <i class="material-icons">exit_to_app</i>@${user.login}
                     </a>
                 </li>
-
             </ul>
         </div>
     </nav>

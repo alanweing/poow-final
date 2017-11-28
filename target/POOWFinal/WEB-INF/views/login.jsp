@@ -27,6 +27,9 @@
 <br>
 <div class="container">
     <div class="row">
+        <h1>Sign-in</h1>
+    </div>
+    <div class="row">
         <form:form action="login" modelAttribute="user" cssClass="col s12" method="post">
             <div class="row">
                 <div class="input-field col s12 black-text">
@@ -50,10 +53,10 @@
                 </div>
             </c:if>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit">Log-in
+                <button class="btn waves-effect waves-light" type="submit">sign in
                     <i class="material-icons right">send</i>
                 </button>
-                <a class="btn waves-effect waves-light" type="button" href="user/create">Register
+                <a class="btn waves-effect waves-light" type="button" href="user/create">sign up
                     <i class="material-icons right">person add</i>
                 </a>
             </div>

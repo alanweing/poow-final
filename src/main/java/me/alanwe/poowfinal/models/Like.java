@@ -10,10 +10,9 @@ public class Like {
 
     @Embeddable
     public static class PK implements Serializable {
-        @Column(name="user_id", nullable=false, updatable=false)
+        @Column(name="user_id")
         protected int userId;
-
-        @Column(name="twit_id", nullable=false, updatable=false)
+        @Column(name="twit_id")
         protected int twitId;
 
         public PK() {}
@@ -22,10 +21,26 @@ public class Like {
             this.userId = userId;
             this.twitId = twitId;
         }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public int getTwitId() {
+            return twitId;
+        }
     }
 
     @EmbeddedId
     private PK pk;
+
+    public PK getPk() {
+        return pk;
+    }
+
+    public void setPk(PK pk) {
+        this.pk = pk;
+    }
 
     @ManyToOne(cascade={CascadeType.DETACH, CascadeType.REFRESH,
                         CascadeType.PERSIST, CascadeType.MERGE},
@@ -43,7 +58,9 @@ public class Like {
     @Column(name="created_at")
     private Date createdAt;
 
-    public Like() {}
+    public Like() {
+        createdAt = new Date();
+    }
 
     public Twit getTwit() {
         return twit;
@@ -64,4 +81,5 @@ public class Like {
     public Date getCreatedAt() {
         return createdAt;
     }
+
 }
