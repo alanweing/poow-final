@@ -33,6 +33,9 @@
 <br>
 <br>
 <div class="container">
+    <div class="row">
+        <h1>Users</h1>
+    </div>
     <c:forEach items="${users}" var="user">
         <div class="card">
             <div class="card-content">

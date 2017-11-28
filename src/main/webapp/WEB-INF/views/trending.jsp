@@ -57,7 +57,7 @@
             <ul class="right hide-on-med-and-down">
                 <li>
                     <a href="user/logout">
-                        <i class="material-icons">exit_to_app</i>@${user.login}
+                        <i class="material-icons right">exit_to_app</i>@${user.login}
                     </a>
                 </li>
             </ul>
@@ -69,7 +69,9 @@
 <br/>
 
 <div class="container">
-
+    <div class="row">
+        <h1>Trending</h1>
+    </div>
     <c:forEach items="${twits}" var="twit">
         <div class="card">
             <div class="card-content">

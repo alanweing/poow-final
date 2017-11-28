@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit">twit</button>
+                <button class="btn waves-effect waves-light" type="submit">tweet</button>
             </div>
             <form:errors path="message" cssStyle="color:red"/>
         </form:form>

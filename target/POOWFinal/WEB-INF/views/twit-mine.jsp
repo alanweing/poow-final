@@ -70,7 +70,9 @@
 <br/>
 
 <div class="container">
-
+    <div class="row">
+        <h1>My tweets</h1>
+    </div>
     <c:forEach items="${twits}" var="twit">
         <div class="card">
             <div class="card-content">
