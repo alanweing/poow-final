@@ -44,9 +44,14 @@
                 <p class="grey-text">Member since: ${user.createdAt}</p>
             </div>
             <div class="card-action">
-                <c:if test="${me.id != user.id}">
-                    <a class="icon" href="/user/${user.id}/follow"><i class="material-icons">person_add</i></a>
-                </c:if>
+                <c:choose>
+                    <c:when test="${(me.id != user.id) && me.follows(user)}">
+                        <a class="icon" href="/user/${user.id}/unfollow"><i class="material-icons">person_outline</i></a>
+                    </c:when>
+                    <c:when test="${(me.id != user.id && !me.follows(user))}">
+                        <a class="icon" href="/user/${user.id}/follow"><i class="material-icons">person_add</i></a>
+                    </c:when>
+                </c:choose>
             </div>
 
         </div>

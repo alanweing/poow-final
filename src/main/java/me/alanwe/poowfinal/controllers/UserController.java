@@ -2,8 +2,9 @@ package me.alanwe.poowfinal.controllers;
 
 import me.alanwe.poowfinal.auth.AuthInterceptor;
 import me.alanwe.poowfinal.auth.Crypto;
+import me.alanwe.poowfinal.models.Follower;
 import me.alanwe.poowfinal.models.User;
-import me.alanwe.poowfinal.services.TwitService;
+import me.alanwe.poowfinal.services.FollowerService;
 import me.alanwe.poowfinal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -24,7 +25,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private TwitService twitService;
+    private FollowerService followerService;
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {
@@ -78,7 +79,30 @@ public class UserController {
         model.addAttribute("twits", user.getTwits());
         return "user";
     }
-//
+
+    @GetMapping(value="/{id}/follow")
+    public String follow(final HttpSession session,
+                         @PathVariable("id") final String id) {
+        final User me = (User) session.getAttribute(AuthInterceptor.USER_TAG);
+        final User user = userService.get(Integer.valueOf(id));
+        final Follower.PK pk = new Follower.PK(me.getId(), user.getId());
+        final Follower follower = new Follower();
+        follower.setUser(me);
+        follower.setUser(user);
+        follower.setPk(pk);
+        followerService.create(follower);
+        return "redirect:/user";
+    }
+
+    @GetMapping(value="/{id}/unfollow")
+    public String unfollow(final HttpSession session,
+                         @PathVariable("id") final String id) {
+        final User me = (User) session.getAttribute(AuthInterceptor.USER_TAG);
+        final User user = userService.get(Integer.valueOf(id));
+        final Follower.PK pk = new Follower.PK(me.getId(), user.getId());
+        followerService.delete(pk);
+        return "redirect:/user";
+    }
 //    @RequestMapping(name="/user", method=RequestMethod.POST, produces="application/json")
 //    public void createUser(@ModelAttribute("User") User user) {
 //

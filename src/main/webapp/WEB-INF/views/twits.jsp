@@ -53,6 +53,11 @@
                         <i class="material-icons">archive</i>
                     </a>
                 </li>
+                <li>
+                    <a href="/twit/following">
+                        <i class="material-icons">groups</i>
+                    </a>
+                </li>
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li>

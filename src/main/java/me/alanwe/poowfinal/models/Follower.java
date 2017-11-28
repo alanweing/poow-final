@@ -51,6 +51,14 @@ public class Follower {
         return createdAt;
     }
 
+    public PK getPk() {
+        return pk;
+    }
+
+    public void setPk(PK pk) {
+        this.pk = pk;
+    }
+
     public User getUser() {
         return user;
     }

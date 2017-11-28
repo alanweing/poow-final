@@ -1,5 +1,8 @@
 package me.alanwe.poowfinal.models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -62,9 +65,15 @@ public class User {
               fetch=FetchType.LAZY)
     private List<Like> likes;
 
+    public List<Follower> getFollows() {
+        if (follows == null) follows = new ArrayList<>();
+        return follows;
+    }
+
     @OneToMany(mappedBy="user", cascade={CascadeType.DETACH, CascadeType.MERGE,
                                          CascadeType.PERSIST, CascadeType.REFRESH},
-               fetch=FetchType.LAZY)
+               fetch=FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Follower> follows;
 
     public User() {
@@ -90,6 +99,13 @@ public class User {
         if (likes == null) likes = new ArrayList<>();
         like.setUser(this);
         likes.add(like);
+    }
+
+    public boolean follows(final User u) {
+        for (final Follower f : getFollows()) {
+            if (f.getUser().getId() == u.getId()) return true;
+        }
+        return false;
     }
 
     public List<Twit> getTwits() {
